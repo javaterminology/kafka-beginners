@@ -33,7 +33,7 @@ public class ProducerDemoKeys {
     	for(int i=0;i<5;i++){
     		
     		String topic = "first_topic";
-        	String message = "Hi Rajasekhar"+Integer.toString(i);
+        	String message = "Hi Rajasekhar:"+Integer.toString(i);
     		String key = "id_"+Integer.toString(i);
     		
     		logger.info("Key:"+key);
@@ -45,7 +45,7 @@ public class ProducerDemoKeys {
     			@Override
     			public void onCompletion(RecordMetadata metadata, Exception e) {
     				if(e==null){
-    					logger.info("New Metadata received Topic: "+metadata.topic()+"\n"
+    					logger.info("Metadata received Topic: "+metadata.topic()+"\n"
     							+"partition:"+metadata.partition()+"\n"
     							+"offsetid:"+metadata.offset());
     				}else{
@@ -53,10 +53,10 @@ public class ProducerDemoKeys {
     				}
 
     			}
-    		}).get();//to make send() as synchronous - don't use it in production
+    		}).get();//block the .send() to make it synchronous - don't use it in production
     	}
     	
-    	//flush data
+    	//flush data - since producer.send() is asynchronous call it will not wait for response during that time program may be exit/terminated.
     	producer.flush();
     	
     	//flush and close producer

@@ -27,22 +27,27 @@ public class KafkaProducerDemoCallback {
     	
     	KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
     	
-    	ProducerRecord<String, String> record = new ProducerRecord<String, String>("first_topic", "Hi Raja");
-    	//send data asynchronous
-    	producer.send(record, new Callback() {
-			
-			@Override
-			public void onCompletion(RecordMetadata metadata, Exception e) {
-				if(e==null){
-					logger.info("New Metadata received Topic: "+metadata.topic()+"\n"
-							+"partition:"+metadata.partition()+"\n"
-							+"offsetid:"+metadata.offset());
-				}else{
-					logger.error("Error while producing message:",e);
-				}
+    	
+    	for(int i=0;i<10;i++){
+    		ProducerRecord<String, String> record = new ProducerRecord<String, String>("first_topic", "Hi Raja-"+i);
+    		//send data asynchronous
+    		producer.send(record, new Callback() {
 
-			}
-		});
+    			@Override
+    			public void onCompletion(RecordMetadata metadata, Exception e) {
+    				if(e==null){
+    					logger.info("New Metadata received Topic: "+metadata.topic()+"\n"
+    							+"partition: "+metadata.partition()+"\n"
+    							+"offsetid: "+metadata.offset()
+    							+"Timestamp: "+metadata.timestamp());
+    					
+    				}else{
+    					logger.error("Error while producing message:",e);
+    				}
+
+    			}
+    		});
+    	}
     	
     	//flush data
     	producer.flush();
