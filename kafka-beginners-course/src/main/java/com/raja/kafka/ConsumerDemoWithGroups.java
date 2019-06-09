@@ -12,15 +12,15 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KafkaConsumerDemo {
+public class ConsumerDemoWithGroups {
 
-	public static final Logger logger = LoggerFactory.getLogger(KafkaConsumerDemo.class.getName());
+	public static final Logger logger = LoggerFactory.getLogger(ConsumerDemoWithGroups.class.getName());
 	public static void main(String[] args) {
 		Properties properties = new Properties();
 		//create properties object
 		String bootstrapServers = "127.0.0.1:9092";
 		String topic = "consumer-demo";
-		String groupId = "demo-app";
+		String groupId = "demo-app1";
 		properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 		properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());

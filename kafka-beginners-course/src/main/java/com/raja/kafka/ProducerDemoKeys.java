@@ -30,9 +30,9 @@ public class ProducerDemoKeys {
     	
     	
     	
-    	for(int i=0;i<5;i++){
+    	for(int i=0;i<10;i++){
     		
-    		String topic = "first_topic";
+    		String topic = "consumer-demo";
         	String message = "Hi Rajasekhar:"+Integer.toString(i);
     		String key = "id_"+Integer.toString(i);
     		
