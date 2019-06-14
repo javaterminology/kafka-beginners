@@ -38,9 +38,8 @@ public class ConsumerDemoWithThread {
 				thread.start();
 				
 				//add a shutdown hook
-				Runtime.getRuntime().addShutdownHook(new Thread(
-						()->{
-							logger.info("Caught shutdown hook!");
+				Runtime.getRuntime().addShutdownHook(new Thread( ()->{
+							logger.info("---Caught shutdown hook!");
 							((ConsumerRunnable)myConsumerRunnable).shutdown();
 							
 							try {
@@ -48,7 +47,7 @@ public class ConsumerDemoWithThread {
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}finally{
-								logger.info("application has exited!");
+								logger.info("---application has exited!");
 							}
 						}));
 				
@@ -58,9 +57,9 @@ public class ConsumerDemoWithThread {
 				try {
 					latch.await();
 				} catch (InterruptedException e) {
-					logger.error("application got interrupted",e);
+					logger.error("---application got interrupted",e);
 				}finally{
-					logger.info("application is closing!");
+					logger.info("---application is closing!");
 				}
 	}
 	
@@ -72,6 +71,7 @@ public class ConsumerDemoWithThread {
 				String groupId,
 				CountDownLatch latch){
 			
+			this.latch = latch;
 			//create properties object
 			Properties properties = new Properties();
 			properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -81,7 +81,7 @@ public class ConsumerDemoWithThread {
 			properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");//latest or none
 			
 			//create kafka consumer
-			this.consumer = new KafkaConsumer<String,String>(properties);
+			consumer = new KafkaConsumer<String,String>(properties);
 			
 			//subscribe to topic
 			consumer.subscribe(Arrays.asList(topic));
@@ -93,7 +93,7 @@ public class ConsumerDemoWithThread {
 			try{
 				//poll data from topic
 				while(true){
-					ConsumerRecords<String, String> consumerRecords = consumer.poll(Duration.ofMillis(1000));
+					ConsumerRecords<String, String> consumerRecords = consumer.poll(Duration.ofMillis(100));
 
 					for(ConsumerRecord<String, String> record:consumerRecords){
 						logger.info("Consumer topic:{}",record.topic());
@@ -103,7 +103,7 @@ public class ConsumerDemoWithThread {
 					
 				}
 			}catch(WakeupException we){
-				logger.info("Received shutdown signal!");
+				logger.info("---Received shutdown signal!");
 			}finally{
 				consumer.close();
 				latch.countDown();
