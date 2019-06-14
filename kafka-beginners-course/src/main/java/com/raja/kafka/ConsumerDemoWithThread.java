@@ -120,5 +120,8 @@ public class ConsumerDemoWithThread {
 	}
 }
 
-
+//caught shutdown hook
+//received shutdown signal
+//application is closing
+//application has exited
 
